@@ -2,7 +2,7 @@
   - 4.times do
     .row
       - 6.times do
-        .card.back
+        .card.back.face-template
 
 .options
   | A person is a gay ?
@@ -11,8 +11,8 @@
   - 4.times do
     .row
       - 6.times do
-        .card.back
+        .card class="face-#{rand(81)}"
 
--81.times do |face_num|
-  .faces class="face-#{face_num}"
+/-81.times do |face_num|
+/  .faces class="face-#{face_num}"
 

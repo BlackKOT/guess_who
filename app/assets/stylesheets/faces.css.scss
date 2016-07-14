@@ -3,10 +3,19 @@ $offset: 150;
 
 @for $face_num from 0 to $img_count {
   .face-#{$face_num} {
-    background: url(faces.gif) #{($face_num % 9) * -$offset}px #{floor($face_num / 9) * -$offset}px no-repeat;
+    background: asset-data-url('faces.gif') #{($face_num % 9) * -$offset}px #{floor($face_num / 9) * -$offset}px no-repeat;
+    //background-size: contain;
   }
 }
-.faces{
-  width: #{$offset}px;
-  height: #{$offset}px;
+
+div[class^='face-'], div[class*='face-'] {
+    width: #{$offset}px;
+    height: #{$offset}px;
 }
+
+//.faces {
+//  //width: #{$offset}px;
+//  //height: #{$offset}px;
+//  background-repeat: no-repeat;
+//  background-size: contain;
+//}
