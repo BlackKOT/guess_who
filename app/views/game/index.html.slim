@@ -11,8 +11,9 @@
   - generate_cards.each_slice(6) do |row|
     .row
       - row.each do |card_index|
-        .card class="face-#{card_index}"
+        .card class="face-#{card_index}" card_id=card_index
 
-/-81.times do |face_num|
-/  .faces class="face-#{face_num}"
+javascript:
+  window.current_game = window.game();
+  window.current_game.initiate('comp', $('.board:first .card'), $('.board:last .card'));
 
