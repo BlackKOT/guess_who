@@ -10,8 +10,8 @@ window.game = ->
 
   state = undefined
 
-  p1_cards_obj = []
-  p2_cards_obj = []
+  p1_cards_obj = {}
+  p2_cards_obj = {}
 
   p1_card_selector = []
   p2_card_selector = []
@@ -42,7 +42,8 @@ window.game = ->
         while(Object.keys(comp_cards).length < 24)
           comp_cards[Math.floor(Math.random() * 82)] = true
 
-        p1_cards_obj = Object.keys(comp_cards)
+        for key in Object.keys(comp_cards)
+          p1_cards_obj[key] = game_faces().faces[Number(key)]
 
         p1_face_index = p1_cards_obj[Math.floor(Math.random() * 24)]
       else
@@ -51,15 +52,13 @@ window.game = ->
       p1_card_selector = p1_cards
       p2_card_selector = p2_cards
 
-      cards = []
       $.each(
         $(p2_card_selector),
         ->
-          cards.push($(@).attr('card_id'))
+          key = $(@).attr('card_id')
+          p2_cards_obj[key] = game_faces().faces[Number(key)]
       )
 
-      p2_cards_obj = cards
-      
       state = states['inited']
       $('body').on 'click', p2_card_selector, choose_target
     else
