@@ -18,7 +18,7 @@ window.game = ->
     glasses: 'has glasses'
     hair: 'haired'
     hair_color: {
-      black: 'black'.
+      black: 'black',
       blonde: 'blonde',
       brown: 'brown',
       pink: 'pink',
@@ -30,7 +30,7 @@ window.game = ->
     teeth: 'visible teeth'
     beard_or_mustaches: 'visible beard or mustaches'
   }
-  
+
   faces = {
     0: {
       sex: face_values['female'],
