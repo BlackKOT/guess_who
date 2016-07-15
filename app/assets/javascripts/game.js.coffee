@@ -34,7 +34,7 @@ window.game = ->
       $('body').on 'click', '.ask_question', choose_question
 
       question_panel = jquestion_panel
-      question_panel.html('Please choose a face...')
+      question_panel.html('Please choose a face on human board...')
 
       if (p1_type == 'comp')
         comp_cards = {}
@@ -128,6 +128,8 @@ window.game = ->
 
 
   choose_face_p1 = ->
+    if state != states['player1'] then return
+
     p1_click_try++
     face_index = $(@).attr('card_id')
 
@@ -143,6 +145,8 @@ window.game = ->
 
 
   choose_face_p2 = ->
+    if state != states['player2'] then return
+
     p2_click_try++
 
     face_index = $(@).attr('card_id')
