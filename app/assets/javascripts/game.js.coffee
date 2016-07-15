@@ -75,7 +75,7 @@ window.game = ->
 
 
       $('body').on 'click', p1_card_selector, choose_face_p2
-      $('body').on 'click', p2_card_selector, choose_face_p1
+#      $('body').on 'click', p2_card_selector, choose_face_p1
 
       change_turn()
 
@@ -137,7 +137,9 @@ window.game = ->
       if p1_click_try == max_click_try
         finished('player2')
       else
-        choose_turn()
+        change_turn()
+
+    false
 
 
   choose_face_p2 = ->
@@ -151,7 +153,9 @@ window.game = ->
       if p2_click_try == max_click_try
         finished('player1')
       else
-        choose_turn()
+        change_turn()
+
+    false
 
 
 
