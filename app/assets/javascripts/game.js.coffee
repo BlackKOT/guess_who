@@ -22,6 +22,8 @@ window.game = ->
   p1_face_index = undefined
   p2_face_index = undefined
 
+  max_click_try = 3
+
   p1_click_try = 0
   p2_click_try = 0
 
@@ -90,7 +92,7 @@ window.game = ->
     else
       """
         <p>Your turn</p>
-        <p>Please ask a question or choose face on apponent board (you have #{3 - p2_click_try} attempts)</p>
+        <p>Please ask a question or choose face on apponent board (you have #{max_click_try - p2_click_try} attempts)</p>
         <p>
           A person
           <select class="relation"><option value="+">have</option><option value="-">dont have</option></select>
@@ -131,6 +133,11 @@ window.game = ->
 
     if (face_index == p2_face_index)
       finished('player1')
+    else
+      if p1_click_try == max_click_try
+        finished('player2')
+      else
+        choose_turn()
 
 
   choose_face_p2 = ->
@@ -140,6 +147,12 @@ window.game = ->
 
     if (face_index == p1_face_index)
       finished('player2')
+    else
+      if p2_click_try == max_click_try
+        finished('player1')
+      else
+        choose_turn()
+
 
 
   choose_question = ->
