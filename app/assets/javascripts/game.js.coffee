@@ -81,13 +81,16 @@ window.game = ->
 
     else alert('Fuck off')
 
+  comp_question = ->
+#    TODO 1. get list of properties, group by count 2. Detect optimal cut 3. Build question
+    true
 
   proc_question_panel = ->
     data = if state == states['player1'] # comp turn
       """
         <p>Comp turn</p>
 
-
+        #{comp_question()}
       """
     else
       """
