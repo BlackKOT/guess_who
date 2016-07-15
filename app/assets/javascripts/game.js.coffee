@@ -620,22 +620,23 @@ window.game = ->
 
     question_panel.html(data)
 
+
   hair_options = ->
     res = ''
     for k,v of face_values['hair_color']
-      res += "<option>#{v} colored hair</option>"
+      res += "<option value=\"hair_color|#{k}\">#{v} colored hair</option>"
     res
 
   properties = ->
     #    Object.keys(_properties)
 
     """
-      <option>male gender</option>
-      <option>female gender</option>
-      <option>glasses</option>
-      <option>visible teeth</option>
-      <option>visible beard or mustaches</option>
-      <option>no hair</option>
+      <option value="">Select your question</option>
+      <option value="sex|male">male gender</option>
+      <option value="sex|female">female gender</option>
+      <option value="glasses">glasses</option>
+      <option value="teeth">visible teeth</option>
+      <option value="beard_or_mustaches">visible beard or mustaches</option>
       #{hair_options()}
     """
 
