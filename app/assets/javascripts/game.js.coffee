@@ -3,8 +3,8 @@ window.game = ->
   states = {
     inited: 'inited'
     choose_face: 'choose_face'
-    player1: 'player1_turn'
-    player2: 'player2_turn'
+    player1: 'player1'
+    player2: 'player2'
     finished: 'finished'
   }
 
@@ -21,6 +21,9 @@ window.game = ->
 
   p1_face_index = undefined
   p2_face_index = undefined
+
+  p1_click_try = 0
+  p2_click_try = 0
 
   question_panel = undefined
 
@@ -68,6 +71,10 @@ window.game = ->
       else
         state = states['player2']
 
+
+      $('body').on 'click', p1_card_selector, choose_face_p2
+      $('body').on 'click', p2_card_selector, choose_face_p1
+
       change_turn()
 
     else alert('Fuck off')
@@ -83,7 +90,7 @@ window.game = ->
     else
       """
         <p>Your turn</p>
-        <p>Please ask a question</p>
+        <p>Please ask a question or choose face on apponent board (you have #{3 - p2_click_try} attempts)</p>
         <p>
           A person
           <select class="relation"><option value="+">have</option><option value="-">dont have</option></select>
@@ -114,7 +121,26 @@ window.game = ->
 
   choose_target = ->
     p2_face_index = $(@).attr('card_id')
+    $('body').off 'click', p2_card_selector
     choose_turn()
+
+
+  choose_face_p1 = ->
+    p1_click_try++
+    face_index = $(@).attr('card_id')
+
+    if (face_index == p2_face_index)
+      finished('player1')
+
+
+  choose_face_p2 = ->
+    p2_click_try++
+
+    face_index = $(@).attr('card_id')
+
+    if (face_index == p1_face_index)
+      finished('player2')
+
 
   choose_question = ->
     rel_val = question_panel.find('.relation').val()
@@ -123,7 +149,7 @@ window.game = ->
     questions_list = state = states['player1'] ? p1_questions : p2_questions
 
     if (questions_list[rel_val + property_val])
-      finished()
+      finished(if state == states['player1'] then 'player2' else 'player1')
     else
       questions_list[rel_val + property_val] = true
       alert(rel_val + property_val)
@@ -141,14 +167,11 @@ window.game = ->
 
     proc_question_panel()
 
-  finished = ->
+  finished = (player_name) ->
     state = states['finished']
-
+    alert(player_name + ' win!!')
       
   return {
     initiate: initiate
-#    properties: properties
-#    property_variants: property_variants
-#    choose_property_variant: choose_property_variant
     get_state: -> return state;
   }    
