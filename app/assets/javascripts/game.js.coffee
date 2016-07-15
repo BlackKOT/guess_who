@@ -1,7 +1,7 @@
 window.game = ->
   states = {
-    inited: 'inited'
-    playe1: 'player1_turn'
+    inited: 'inited',
+    player1: 'player1_turn'
     player2: 'player2_turn'
     finished: 'finished'
   }
@@ -554,8 +554,12 @@ window.game = ->
   p1_card_selectors = []
   p2_card_selectors = []
 
-  initiate = (p1_type, p1_cards, p2_cards) ->  # p1_type - comp or player // p2_cards jquery selectors
+  question_panel = undefined
+
+  initiate = (jquestion_panel, p1_type, p1_cards, p2_cards) ->  # p1_type - comp or player // p2_cards jquery selectors
     unless (state)
+      question_panel = jquestion_panel
+
       if (p1_type == 'comp')
         comp_cards = {}
 
@@ -579,14 +583,35 @@ window.game = ->
       p2_cards_obj = cards
       
       state = states['inited']
+
+      choose_turn()
     else 
       alert('Fuck off')
 
 
-  properties = -> Object.keys(@_properties)
+  choose_turn = ->
+    if (state == states['inited'])
+      if Math.floor(Math.random() * 82) % 2 == 1
+        state = states['player1']
+      else
+        state = states['player2']
+
+      change_turn()
+
+    else alert('Fuck off')
 
 
-  property_variants = (property) -> @_properties[property]
+  proc_question_panel = ->
+    if state == states['player1'] # comp turn
+      question_panel.html('Comp turn')
+    else
+      question_panel.html('Your turn')
+
+
+  properties = -> Object.keys(_properties)
+
+
+  property_variants = (property) -> _properties[property]
 
 
   choose_property_variant = (variant) ->
@@ -594,13 +619,13 @@ window.game = ->
 
   change_turn = ->
     if (state == states['player1'])
-      # show questions panel
       state = states['player2']
-    else if (state == @states['player2'])
-      # hide questions panel
+    else if (state == states['player2'])
       state = states['player1']
     else
       alert('Some shit happened')
+
+    proc_question_panel()
 
   finished = ->
     state = states['finished']
