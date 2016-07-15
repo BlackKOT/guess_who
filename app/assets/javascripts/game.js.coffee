@@ -1,16 +1,13 @@
 window.game = ->
   states = {
-    inited: 'inited',
+    inited: 'inited'
+    choose_face: 'choose_face'
     player1: 'player1_turn'
     player2: 'player2_turn'
     finished: 'finished'
   }
 
   state = undefined
-#  _properties =
-#    nose: ['small, big']
-#    hair: ['brown', 'nothing']
-#    face: ['smart', 'triangle']
 
   face_values = {
     male: 'male'
@@ -551,8 +548,14 @@ window.game = ->
   p1_cards_obj = []
   p2_cards_obj = []
 
-  p1_card_selectors = []
-  p2_card_selectors = []
+  p1_card_selector = []
+  p2_card_selector = []
+
+  p1_questions = {}
+  p2_questions = {}
+
+  p1_face_index = undefined
+  p2_face_index = undefined
 
   question_panel = undefined
 
@@ -561,6 +564,7 @@ window.game = ->
       $('body').on 'click', '.ask_question', choose_question
 
       question_panel = jquestion_panel
+      question_panel.html('Please choose a face...')
 
       if (p1_type == 'comp')
         comp_cards = {}
@@ -569,15 +573,17 @@ window.game = ->
           comp_cards[Math.floor(Math.random() * 82)] = true
 
         p1_cards_obj = Object.keys(comp_cards)
+
+        p1_face_index = p1_cards_obj[Math.floor(Math.random() * 24)]
       else
         # send request to channel
 
-      p1_card_selectors = p1_cards
-      p2_card_selectors = p2_cards
+      p1_card_selector = p1_cards
+      p2_card_selector = p2_cards
 
       cards = []
       $.each(
-        p2_cards,
+        $(p2_card_selector),
         ->
           cards.push($(@).attr('card_id'))
       )
@@ -585,9 +591,8 @@ window.game = ->
       p2_cards_obj = cards
       
       state = states['inited']
-
-      choose_turn()
-    else 
+      $('body').on 'click', p2_card_selector, choose_target
+    else
       alert('Fuck off')
 
 
@@ -638,11 +643,25 @@ window.game = ->
       <option value="glasses">glasses</option>
       <option value="teeth">visible teeth</option>
       <option value="beard_or_mustaches">visible beard or mustaches</option>
+      <option value="hair">hair</option>
       #{hair_options()}
     """
 
+  choose_target = ->
+    p2_face_index = $(@).attr('card_id')
+    choose_turn()
+
   choose_question = ->
-    alert('bla')
+    rel_val = question_panel.find('.relation').val()
+    property_val = question_panel.find('.property').val()
+
+    questions_list = state = states['player1'] ? p1_questions : p2_questions
+
+    if (questions_list[rel_val + property_val])
+      finished()
+    else
+      questions_list[rel_val + property_val] = true
+      alert(rel_val + property_val)
 
     false
 
