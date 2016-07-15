@@ -558,6 +558,8 @@ window.game = ->
 
   initiate = (jquestion_panel, p1_type, p1_cards, p2_cards) ->  # p1_type - comp or player // p2_cards jquery selectors
     unless (state)
+      $('body').on 'click', '.ask_question', choose_question
+
       question_panel = jquestion_panel
 
       if (p1_type == 'comp')
@@ -613,10 +615,12 @@ window.game = ->
         <p>Your turn</p>
         <p>Please ask a question</p>
         <p>
-          A person have a <select class='property'>#{properties()}</select>
+          A person
+          <select class="relation"><option value="+">have</option><option value="-">dont have</option></select>
+          a <select class='property'>#{properties()}</select>
+          <a href="#" class="ask_question">Ask</a>
         </p>
       """
-
 
     question_panel.html(data)
 
@@ -628,10 +632,7 @@ window.game = ->
     res
 
   properties = ->
-    #    Object.keys(_properties)
-
     """
-      <option value="">Select your question</option>
       <option value="sex|male">male gender</option>
       <option value="sex|female">female gender</option>
       <option value="glasses">glasses</option>
@@ -640,11 +641,10 @@ window.game = ->
       #{hair_options()}
     """
 
-#
-#  property_variants = (property) -> _properties[property]
+  choose_question = ->
+    alert('bla')
 
-
-  choose_property_variant = (variant) ->
+    false
 
 
   change_turn = ->
