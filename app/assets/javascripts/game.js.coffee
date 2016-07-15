@@ -7,10 +7,10 @@ window.game = ->
   }
 
   state = undefined
-  _properties =
-    nose: ['small, big']
-    hair: ['brown', 'nothing']
-    face: ['smart', 'triangle']
+#  _properties =
+#    nose: ['small, big']
+#    hair: ['brown', 'nothing']
+#    face: ['smart', 'triangle']
 
   face_values = {
     male: 'male'
@@ -602,16 +602,45 @@ window.game = ->
 
 
   proc_question_panel = ->
-    if state == states['player1'] # comp turn
-      question_panel.html('Comp turn')
+    data = if state == states['player1'] # comp turn
+      """
+        <p>Comp turn</p>
+
+
+      """
     else
-      question_panel.html('Your turn')
+      """
+        <p>Your turn</p>
+        <p>Please ask a question</p>
+        <p>
+          A person have a <select class='property'>#{properties()}</select>
+        </p>
+      """
 
 
-  properties = -> Object.keys(_properties)
+    question_panel.html(data)
 
+  hair_options = ->
+    res = ''
+    for k,v of face_values['hair_color']
+      res += "<option>#{v} colored hair</option>"
+    res
 
-  property_variants = (property) -> _properties[property]
+  properties = ->
+    #    Object.keys(_properties)
+
+    """
+      <option>male gender</option>
+      <option>female gender</option>
+      <option>glasses</option>
+      <option>visible teeth</option>
+      <option>visible beard or mustaches</option>
+      <option>no hair</option>
+      #{hair_options()}
+    """
+
+#
+#  property_variants = (property) -> _properties[property]
 
 
   choose_property_variant = (variant) ->
@@ -633,8 +662,8 @@ window.game = ->
       
   return {
     initiate: initiate
-    properties: properties
-    property_variants: property_variants
-    choose_property_variant: choose_property_variant
+#    properties: properties
+#    property_variants: property_variants
+#    choose_property_variant: choose_property_variant
     get_state: -> return state;
   }    
