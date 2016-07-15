@@ -106,7 +106,7 @@ window.game = ->
 
   hair_options = ->
     res = ''
-    for k,v of game_faces.face_values['hair_color']
+    for k,v of game_faces().face_values['hair_color']
       res += "<option value=\"hair_color|#{k}\">#{v} colored hair</option>"
     res
 
