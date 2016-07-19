@@ -10,6 +10,8 @@ window.game = ->
 
   state = undefined
 
+  p1_question = undefined
+
   p1_cards_obj = {}
   p2_cards_obj = {}
 
@@ -31,7 +33,10 @@ window.game = ->
 
   initiate = (jquestion_panel, p1_type, p1_cards, p2_cards) ->  # p1_type - comp or player // p2_cards jquery selectors
     unless (state)
-      $('body').on 'click', '.ask_question', choose_question
+      $('body').on 'click', '.ask_question', ask_question
+
+      $('body').on 'click', '.answer_yes', player2_positive_answer
+      $('body').on 'click', '.answer_no', player2_negative_answer
 
       question_panel = jquestion_panel
       question_panel.html('Please choose a face on human board...')
@@ -91,8 +96,7 @@ window.game = ->
       sort_measures.push {name: key, val: val}
     sort_measures.sort (obj1, obj2) ->
       obj1.val - obj2.val
-    avg_val = sort_measures[Math.round(sort_measures.length / 2)].name
-    question = avg_val.split('|')
+    p1_question = sort_measures[Math.round(sort_measures.length / 2)].name
 
   proc_question_panel = ->
     data = if state == states['player1'] # comp turn
@@ -100,8 +104,14 @@ window.game = ->
       """
         <p>Comp turn</p>
 
-        #{comp_question()}
+        <p>
+          A person have a #{comp_question()} ?
+        </p>
 
+        <p>
+          <a href="#" class="answer_yes">Yes</a>
+          <a href="#" class="answer_no">No</a>
+        </p>
       """
     else
       """
@@ -110,7 +120,7 @@ window.game = ->
         <p>
           A person
           <select class="relation"><option value="+">have</option><option value="-">dont have</option></select>
-          a <select class='property'>#{properties()}</select>
+          a <select class='property'>#{properties()}</select> ?
           <a href="#" class="ask_question">Ask</a>
         </p>
       """
@@ -128,10 +138,10 @@ window.game = ->
     """
       <option value="sex|male">male gender</option>
       <option value="sex|female">female gender</option>
-      <option value="glasses">glasses</option>
-      <option value="teeth">visible teeth</option>
-      <option value="beard_or_mustaches">visible beard or mustaches</option>
-      <option value="hair">hair</option>
+      <option value="glasses|has glasses">glasses</option>
+      <option value="teeth|visible teeth">visible teeth</option>
+      <option value="beard_or_mustaches|visible beard or mustaches">visible beard or mustaches</option>
+      <option value="hair|haired">hair</option>
       #{hair_options()}
     """
 
@@ -176,8 +186,18 @@ window.game = ->
     false
 
 
+  player2_positive_answer = ->
+    console.log('Positive user answer')
+    proceed_question(p1_question)
+    false
 
-  choose_question = ->
+  player2_negative_answer = ->
+    console.log('Negative user answer')
+    proceed_question('-' + p1_question)
+    false
+
+
+  ask_question = ->
     rel_val = question_panel.find('.relation').val()
     property_val = question_panel.find('.property').val()
 
@@ -187,9 +207,18 @@ window.game = ->
       finished(if state == states['player1'] then 'player2' else 'player1')
     else
       questions_list[rel_val + property_val] = true
-      alert(rel_val + property_val)
+      proceed_question(rel_val + property_val)
 
     false
+
+
+  proceed_question = (question)->
+    state = states['player1']
+
+
+    alert(question)
+
+    # change_turn()
 
 
   change_turn = ->
