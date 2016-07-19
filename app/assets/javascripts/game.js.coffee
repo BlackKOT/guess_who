@@ -91,9 +91,6 @@ window.game = ->
       sort_measures.push {name: key, val: val}
     sort_measures.sort (obj1, obj2) ->
       obj1.val - obj2.val
-    console.log measures
-    console.log sort_measures
-    console.log sort_measures[Math.round(sort_measures.length / 2)]
     avg_val = sort_measures[Math.round(sort_measures.length / 2)].name
     question = avg_val.split('|')
 
