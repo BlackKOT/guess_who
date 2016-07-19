@@ -15,8 +15,11 @@ window.game = ->
   p1_cards_obj = {}
   p2_cards_obj = {}
 
-  p1_card_selector = []
-  p2_card_selector = []
+  p1_cards_jquery = []
+  p2_cards_jquery = []
+
+  p1_card_selector = undefined
+  p2_card_selector = undefined
 
   p1_questions = {}
   p2_questions = {}
@@ -33,6 +36,9 @@ window.game = ->
 
   initiate = (jquestion_panel, p1_type, p1_cards, p2_cards) ->  # p1_type - comp or player // p2_cards jquery selectors
     unless (state)
+      p1_card_selector = p1_cards
+      p2_card_selector = p2_cards
+
       $('body').on 'click', '.ask_question', ask_question
 
       $('body').on 'click', '.answer_yes', player2_positive_answer
@@ -44,8 +50,16 @@ window.game = ->
       if (p1_type == 'comp')
         comp_cards = {}
 
-        while(Object.keys(comp_cards).length < 24)
-          comp_cards[Math.floor(Math.random() * 82)] = true
+        $.each(
+          $(p1_card_selector),
+          ->
+            p1_cards_jquery.push($(@))
+            key = $(@).attr('card_id')
+            p1_cards_obj[key] = game_faces().faces[Number(key)]
+        )
+
+#        while(Object.keys(comp_cards).length < 24)
+#          comp_cards[Math.floor(Math.random() * 82)] = true
 
         for key in Object.keys(comp_cards)
           p1_cards_obj[key] = game_faces().faces[Number(key)]
@@ -54,12 +68,10 @@ window.game = ->
       else
         # send request to channel
 
-      p1_card_selector = p1_cards
-      p2_card_selector = p2_cards
-
       $.each(
         $(p2_card_selector),
         ->
+          p2_cards_jquery.push($(@))
           key = $(@).attr('card_id')
           p2_cards_obj[key] = game_faces().faces[Number(key)]
       )
@@ -188,7 +200,7 @@ window.game = ->
 
   player2_positive_answer = ->
     console.log('Positive user answer')
-    proceed_question(p1_question)
+    proceed_question('+' + p1_question)
     false
 
   player2_negative_answer = ->
@@ -213,12 +225,31 @@ window.game = ->
 
 
   proceed_question = (question)->
-    state = states['player1']
+    is_first_player = state == states['player1']
 
+    obj_list = if is_first_player then p2_cards_obj else p1_cards_obj
+    selector_list = if is_first_player then p2_cards_jquery else p1_cards_jquery
 
-    alert(question)
+    negative = question[0] == '-'
 
-    # change_turn()
+    [hkey, hvalue] = question.substring(1).split('|')
+
+    index = 0
+    for key, value of obj_list
+      predictable = value[hkey] != hvalue
+      if (negative) then  predictable = !predictable
+
+      if (predictable)
+        selector_list[index].addClass('back')
+        selector_list.splice(index, 1)
+        delete obj_list[key]
+      else
+        index++
+
+    if selector_list.length == 0
+      finished(if is_first_player then 'player1' else 'player2')
+    else
+      change_turn()
 
 
   change_turn = ->
