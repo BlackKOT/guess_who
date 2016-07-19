@@ -117,7 +117,7 @@ window.game = ->
         <p>Comp turn</p>
 
         <p>
-          A person have a #{comp_question()} ?
+          A person has a #{comp_question().split('|').reverse()} ?
         </p>
 
         <p>
