@@ -242,7 +242,7 @@ window.game = ->
         value.obj.addClass('back')
         delete obj_list[key]
 
-    if Object.keys(obj_list).length == 0
+    if $.isEmptyObject(obj_list)
       finished(if is_first_player then 'player1' else 'player2')
     else
       change_turn()
