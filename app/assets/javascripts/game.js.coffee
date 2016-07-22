@@ -177,7 +177,7 @@ window.game = ->
     p1_click_try++
     face_index = $(@).attr('card_id')
 
-    if (face_index == p2_face_index)
+    if (face_index == p2_face.obj.attr('card_id'))
       finished('player1')
     else
       $(@).addClass('back')
@@ -196,7 +196,7 @@ window.game = ->
 
     face_index = $(@).attr('card_id')
 
-    if (face_index == p1_face_index)
+    if (face_index == p1_face.obj.attr('card_id'))
       finished('player2')
     else
       $(@).addClass('back')
