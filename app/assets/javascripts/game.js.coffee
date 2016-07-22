@@ -21,8 +21,8 @@ window.game = ->
   p1_questions = {}
   p2_questions = {}
 
-  p1_face_index = undefined
-  p2_face_index = undefined
+  p1_face = undefined
+  p2_face = undefined
 
   max_click_try = 3
 
@@ -63,7 +63,8 @@ window.game = ->
 #        for key in Object.keys(comp_cards)
 #          p1_cards_obj[key] = game_faces().faces[Number(key)]
 
-        p1_face_index = p1_cards_obj[Math.floor(Math.random() * 24)]
+        p1_face = p1_cards_obj[Object.keys(p1_cards_obj)[Math.floor(Math.random() * 24)]]
+        p1_face.obj.addClass('sos')
       else
         # send request to channel
 
@@ -159,7 +160,9 @@ window.game = ->
     """
 
   choose_target = ->
-    p2_face_index = $(@).attr('card_id')
+    p2_face = p2_cards_obj[$(@).attr('card_id')]
+    p2_face.obj.addClass('sos')
+
     $('body').off 'click', p2_card_selector
     choose_turn()
 
@@ -173,6 +176,7 @@ window.game = ->
     if (face_index == p2_face_index)
       finished('player1')
     else
+      $(@).addClass('back')
       if p1_click_try == max_click_try
         finished('player2')
       else
@@ -191,6 +195,7 @@ window.game = ->
     if (face_index == p1_face_index)
       finished('player2')
     else
+      $(@).addClass('back')
       if p2_click_try == max_click_try
         finished('player1')
       else
@@ -210,6 +215,12 @@ window.game = ->
     false
 
 
+  prepare_question_attrs = (attrs) ->
+    [hkey, hvalue] = attrs.split('|')
+    if hvalue == 'null' then hvalue = null
+    return [hkey, hvalue]
+
+
   ask_question = ->
     rel_val = question_panel.find('.relation').val()
     property_val = question_panel.find('.property').val()
@@ -220,25 +231,37 @@ window.game = ->
       finished(if state == states['player1'] then 'player2' else 'player1')
     else
       questions_list[rel_val + property_val] = true
+
+      # yes - no section for comp
+      [hkey, hvalue] = prepare_question_attrs(property_val)
+
+      unless (res = p1_face.attrs[hkey] == hvalue)
+        rel_val = if rel_val == '+' then '-' else '+'
+      #########################################
+
       proceed_question(rel_val + property_val)
 
     false
 
 
-  proceed_question = (question)->
+  proceed_question = (question) ->
     is_first_player = state == states['player1']
 
     obj_list = if is_first_player then p2_cards_obj else p1_cards_obj
+    person_key = if is_first_player then p2_face else p1_face
 
     negative = question[0] == '-'
 
-    [hkey, hvalue] = question.substring(1).split('|')
+    [hkey, hvalue] = prepare_question_attrs(question.substring(1))
 
     for key, value of obj_list
       predictable = value.attrs[hkey] != hvalue
       if (negative) then  predictable = !predictable
 
       if (predictable)
+        if person_key == key
+          finished(if is_first_player then 'player1' else 'player2')
+
         value.obj.addClass('back')
         delete obj_list[key]
 
