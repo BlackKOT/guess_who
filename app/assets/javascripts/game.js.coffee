@@ -112,6 +112,10 @@ window.game = ->
       obj1.val - obj2.val
     p1_question = sort_measures[Math.round(sort_measures.length / 2)].name
 
+  generate_question = ->
+    values = comp_question().split('|').reverse()
+    if values[0]=='null' then "hasn't #{values[1]}" else "has a #{values[0]} #{values[1]}"
+
   proc_question_panel = ->
     data = if state == states['player1'] # comp turn
       # TODO if opened pictures <=3 then close cards rnd(3) else comp_question()
@@ -119,7 +123,7 @@ window.game = ->
         <p>Comp turn</p>
 
         <p>
-          A person has a #{comp_question().split('|').reverse()} ?
+          A person #{generate_question()} ?
         </p>
 
         <p>
@@ -130,7 +134,7 @@ window.game = ->
     else
       """
         <p>Your turn</p>
-        <p>Please ask a question or choose face on apponent board (you have #{max_click_try - p2_click_try} attempts)</p>
+        <p>Please ask a question or choose face on opponent board (you have #{max_click_try - p2_click_try} attempts)</p>
         <p>
           A person
           <select class="relation"><option value="+">have</option><option value="-">dont have</option></select>
