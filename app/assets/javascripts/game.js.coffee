@@ -15,9 +15,6 @@ window.game = ->
   p1_cards_obj = {}
   p2_cards_obj = {}
 
-  p1_cards_jquery = []
-  p2_cards_jquery = []
-
   p1_card_selector = undefined
   p2_card_selector = undefined
 
@@ -53,16 +50,18 @@ window.game = ->
         $.each(
           $(p1_card_selector),
           ->
-            p1_cards_jquery.push($(@))
             key = $(@).attr('card_id')
-            p1_cards_obj[key] = game_faces().faces[Number(key)]
+            p1_cards_obj[key] = {
+              attrs: game_faces().faces[Number(key)]
+              obj: $(@)
+            }
         )
 
 #        while(Object.keys(comp_cards).length < 24)
 #          comp_cards[Math.floor(Math.random() * 82)] = true
 
-        for key in Object.keys(comp_cards)
-          p1_cards_obj[key] = game_faces().faces[Number(key)]
+#        for key in Object.keys(comp_cards)
+#          p1_cards_obj[key] = game_faces().faces[Number(key)]
 
         p1_face_index = p1_cards_obj[Math.floor(Math.random() * 24)]
       else
@@ -71,9 +70,11 @@ window.game = ->
       $.each(
         $(p2_card_selector),
         ->
-          p2_cards_jquery.push($(@))
           key = $(@).attr('card_id')
-          p2_cards_obj[key] = game_faces().faces[Number(key)]
+          p2_cards_obj[key] = {
+            attrs: game_faces().faces[Number(key)]
+            obj: $(@)
+          }
       )
 
       state = states['inited']
@@ -101,7 +102,7 @@ window.game = ->
     sort_measures = []
     measures = {}
     for k,v of p2_cards_obj
-      for n,val of v
+      for n,val of v.attrs
         key = "#{n}|#{val}"
         measures[key] = (Number(measures[key])||0) + 1
     for key, val of measures
@@ -213,7 +214,7 @@ window.game = ->
     rel_val = question_panel.find('.relation').val()
     property_val = question_panel.find('.property').val()
 
-    questions_list = state = states['player1'] ? p1_questions : p2_questions
+    questions_list = state == states['player1'] ? p1_questions : p2_questions
 
     if (questions_list[rel_val + property_val])
       finished(if state == states['player1'] then 'player2' else 'player1')
@@ -228,25 +229,20 @@ window.game = ->
     is_first_player = state == states['player1']
 
     obj_list = if is_first_player then p2_cards_obj else p1_cards_obj
-    selector_list = if is_first_player then p2_cards_jquery else p1_cards_jquery
 
     negative = question[0] == '-'
 
     [hkey, hvalue] = question.substring(1).split('|')
 
-    index = 0
     for key, value of obj_list
-      predictable = value[hkey] != hvalue
+      predictable = value.attrs[hkey] != hvalue
       if (negative) then  predictable = !predictable
 
       if (predictable)
-        selector_list[index].addClass('back')
-        selector_list.splice(index, 1)
+        value.obj.addClass('back')
         delete obj_list[key]
-      else
-        index++
 
-    if selector_list.length == 0
+    if Object.keys(obj_list).length == 0
       finished(if is_first_player then 'player1' else 'player2')
     else
       change_turn()
