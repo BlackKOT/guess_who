@@ -64,7 +64,7 @@ window.game = ->
 #          p1_cards_obj[key] = game_faces().faces[Number(key)]
 
         p1_face = p1_cards_obj[Object.keys(p1_cards_obj)[Math.floor(Math.random() * 24)]]
-        p1_face.obj.addClass('sos')
+#        p1_face.obj.addClass('sos')
       else
         # send request to channel
 
