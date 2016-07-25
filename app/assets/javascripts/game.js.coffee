@@ -145,11 +145,11 @@ window.game = ->
 
     question_panel.html(data)
 
-
   hair_options = ->
     res = ''
     for k,v of game_faces().face_values['hair_color']
-      res += "<option value=\"hair_color|#{k}\">#{v} colored hair</option>"
+      hair_color = if k == 'blonde' then 'ivory' else k
+      res += "<option style=\"color:#{hair_color}; background-color:#{hair_color};\" value=\"hair_color|#{k}\">#{v} colored hair</option>"
     res
 
   properties = ->
