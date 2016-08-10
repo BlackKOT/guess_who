@@ -276,14 +276,23 @@ window.game = ->
 
 
   change_turn = ->
+    cards = []
+
     if (state == states['player1'])
       state = states['player2']
+      cards = p1_cards_obj
+
     else if (state == states['player2'])
       state = states['player1']
+      cards = p2_cards_obj
     else
       alert('Some shit happened')
 
-    proc_question_panel()
+    if (cards.length == 1)
+      finished(if state == states['player1'] then 'player1' else 'player2')
+    else
+      proc_question_panel()
+
 
   finished = (player_name) ->
     state = states['finished']
