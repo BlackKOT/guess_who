@@ -118,19 +118,25 @@ window.game = ->
 
   proc_question_panel = ->
     data = if state == states['player1'] # comp turn
-      # TODO if opened pictures <=3 then close cards rnd(3) else comp_question()
-      """
-        <p>Comp turn</p>
+      if (Object.keys(p2_cards_obj).length <= 3)
+        card_index = Math.floor(Math.random() * p2_cards_obj.length)
+        card = p2_cards_obj[card_index].obj
+        choose_face_p1.call(card)
 
-        <p>
-          A person #{generate_question()} ?
-        </p>
+        'Comp clicked on card...'
+      else
+        """
+          <p>Comp turn</p>
 
-        <p>
-          <a href="#" class="answer_yes">Yes</a>
-          <a href="#" class="answer_no">No</a>
-        </p>
-      """
+          <p>
+            A person #{generate_question()} ?
+          </p>
+
+          <p>
+            <a href="#" class="answer_yes">Yes</a>
+            <a href="#" class="answer_no">No</a>
+          </p>
+        """
     else
       """
         <p>Your turn</p>
@@ -181,6 +187,8 @@ window.game = ->
       finished('player1')
     else
       $(@).addClass('back')
+      delete p2_cards_obj[face_index]
+
       if p1_click_try == max_click_try
         finished('player2')
       else
@@ -200,6 +208,8 @@ window.game = ->
       finished('player2')
     else
       $(@).addClass('back')
+      delete p1_cards_obj[face_index]
+
       if p2_click_try == max_click_try
         finished('player1')
       else
@@ -288,7 +298,7 @@ window.game = ->
     else
       alert('Some shit happened')
 
-    if (cards.length == 1)
+    if (Object.keys(cards).length == 1)
       finished(if state == states['player1'] then 'player1' else 'player2')
     else
       proc_question_panel()
