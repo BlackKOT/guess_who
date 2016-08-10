@@ -31,6 +31,8 @@ window.game = ->
 
   question_panel = undefined
 
+  ignored_questions = {}
+
   initiate = (jquestion_panel, p1_type, p1_cards, p2_cards) ->  # p1_type - comp or player // p2_cards jquery selectors
     unless (state)
       p1_card_selector = p1_cards
@@ -107,10 +109,13 @@ window.game = ->
         key = "#{n}|#{val}"
         measures[key] = (Number(measures[key])||0) + 1
     for key, val of measures
-      sort_measures.push {name: key, val: val}
+      unless ignored_questions[key]
+        sort_measures.push {name: key, val: val}
     sort_measures.sort (obj1, obj2) ->
       obj1.val - obj2.val
     p1_question = sort_measures[Math.round(sort_measures.length / 2)].name
+    ignored_questions[p1_question] = true
+    p1_question
 
   generate_question = ->
     values = comp_question().split('|').reverse()
