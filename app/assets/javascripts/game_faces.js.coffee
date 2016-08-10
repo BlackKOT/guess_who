@@ -166,8 +166,8 @@ window.game_faces = ->
       glasses: face_values['glasses'],
       hair: face_values['hair'],
       hair_color: face_values['hair_color']['black'],
-      teeth:
-        teeth: face_values['teeth'], beard_or_mustaches: null
+      teeth: face_values['teeth'],
+      beard_or_mustaches: null
     },
     24: {
       sex: face_values['male'],
@@ -515,7 +515,7 @@ window.game_faces = ->
       glasses: null,
       hair: face_values['hair'],
       hair_color: face_values['hair_color']['black'],
-      teeth: null,
+      teeth: face_values['teeth'],
       beard_or_mustaches: null
     },
     79: {
