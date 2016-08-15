@@ -9,10 +9,12 @@
 .board
   = yield :cards_block
 
-= link_to 'New game', '#', class: 'new_game'
 hr
 .options
-
+= link_to '#', class: 'new_game' do
+  = image_tag 'newgame.png'
+.clear
+hr
 
 |Human part
 .human_part.board

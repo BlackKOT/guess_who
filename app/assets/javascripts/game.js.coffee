@@ -87,7 +87,7 @@ window.game = ->
   generate_cards = (board_type) ->
     cards = {}
     while(Object.keys(cards).length < 24)
-      cards[Math.floor(Math.random() * 82)] = true
+      cards[Math.floor(Math.random() * 81)] = true
 
     cards = Object.keys(cards)
 
@@ -98,13 +98,13 @@ window.game = ->
         $card_obj = $(@)
 
         if ($card_obj.attr('card_id'))
-          $card_obj.removeClass("face-#{$card_obj.attr('card_id')}")
+          $card_obj.removeClass("face-#{$card_obj.attr('card_id')} sos back")
         $card_obj.addClass("face-#{card_id}").attr('card_id', card_id)
     )
 
   choose_turn = ->
     if (state == states['inited'])
-      if Math.floor(Math.random() * 82) % 2 == 1
+      if Math.floor(Math.random() * 81) % 2 == 1
         state = states['player1']
       else
         state = states['player2']
@@ -196,6 +196,7 @@ window.game = ->
 
     $('body').off 'click', p2_card_selector
     choose_turn()
+    false
 
 
   choose_face_p1 = ->

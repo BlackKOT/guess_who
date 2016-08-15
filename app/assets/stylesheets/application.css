@@ -17,3 +17,18 @@ body {
 .sos {
     border: 2px solid green;
 }
+
+.new_game {
+    outline: 0;
+    float: right;
+    width: 20%;
+}
+
+.options {
+  width: 80%;
+  float:left;
+}
+
+.clear{
+    clear: both;
+}
