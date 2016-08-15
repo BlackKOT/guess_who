@@ -1,24 +1,23 @@
-| Comp part
-.board
+= content_for :cards_block do
   - 24.times.to_a.each_slice(6) do |row|
     .row
       - row.each do |card_index|
         = link_to('#') do
           .card
 
+| Comp part
+.board
+  = yield :cards_block
+
 = link_to 'New game', '#', class: 'new_game'
 hr
 .options
-  | A person is a gay ?
+
 
 |Human part
 .human_part.board
-  - 24.times.to_a.each_slice(6) do |row|
-    .row
-      - row.each do |card_index|
-        .card
+  = yield :cards_block
 
 javascript:
-  window.current_game = window.game();
-  window.current_game.initiate($('.options'), 'comp', '.board:first .card', '.board:last .card');
+  window.initiate_game();
 

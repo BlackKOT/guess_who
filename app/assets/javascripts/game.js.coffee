@@ -95,7 +95,11 @@ window.game = ->
       $(board_type),
       ->
         card_id = cards.shift()
-        $(@).addClass("face-#{card_id}").attr('card_id', card_id)
+        $card_obj = $(@)
+
+        if ($card_obj.attr('card_id'))
+          $card_obj.removeClass("face-#{$card_obj.attr('card_id')}")
+        $card_obj.addClass("face-#{card_id}").attr('card_id', card_id)
     )
 
   choose_turn = ->
