@@ -38,6 +38,8 @@ window.game = ->
       p1_card_selector = p1_cards
       p2_card_selector = p2_cards
 
+      generate_cards(p2_card_selector)
+
       $('body').on 'click', '.ask_question', ask_question
 
       $('body').on 'click', '.answer_yes', player2_positive_answer
@@ -49,6 +51,8 @@ window.game = ->
       if (p1_type == 'comp')
         comp_cards = {}
 
+        generate_cards(p1_card_selector)
+
         $.each(
           $(p1_card_selector),
           ->
@@ -58,12 +62,6 @@ window.game = ->
               obj: $(@)
             }
         )
-
-#        while(Object.keys(comp_cards).length < 24)
-#          comp_cards[Math.floor(Math.random() * 82)] = true
-
-#        for key in Object.keys(comp_cards)
-#          p1_cards_obj[key] = game_faces().faces[Number(key)]
 
         p1_face = p1_cards_obj[Object.keys(p1_cards_obj)[Math.floor(Math.random() * 24)]]
 #        p1_face.obj.addClass('sos')
@@ -85,6 +83,20 @@ window.game = ->
     else
       alert('Fuck off')
 
+
+  generate_cards = (board_type) ->
+    cards = {}
+    while(Object.keys(cards).length < 24)
+      cards[Math.floor(Math.random() * 82)] = true
+
+    cards = Object.keys(cards)
+
+    $.each(
+      $(board_type),
+      ->
+        card_id = cards.shift()
+        $(@).addClass("face-#{card_id}").attr('card_id', card_id)
+    )
 
   choose_turn = ->
     if (state == states['inited'])

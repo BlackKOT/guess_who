@@ -1,22 +1,22 @@
 | Comp part
 .board
-  - generate_cards.each_slice(6) do |row|
+  - 24.times.to_a.each_slice(6) do |row|
     .row
       - row.each do |card_index|
         = link_to('#') do
-          .card class="face-#{card_index}" card_id=card_index
+          .card
 
-= link_to 'New game', ''
+= link_to 'New game', '#', class: 'new_game'
 hr
 .options
   | A person is a gay ?
 
 |Human part
 .human_part.board
-  - generate_cards.each_slice(6) do |row|
+  - 24.times.to_a.each_slice(6) do |row|
     .row
       - row.each do |card_index|
-        .card class="face-#{card_index}" card_id=card_index
+        .card
 
 javascript:
   window.current_game = window.game();
