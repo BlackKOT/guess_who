@@ -6,8 +6,10 @@
 #= require_tree .
 
 window.initiate_game = ->
-  window.current_game = window.game();
-  window.current_game.initiate($('.options'), 'comp', '.board:first .card', '.board:last .card');
+  if window.current_game
+    window.current_game.shutdown()
+  window.current_game = window.game()
+  window.current_game.initiate($('.options'), 'comp', '.board:first .card', '.board:last .card')
   false
 
 $ ->

@@ -328,9 +328,23 @@ window.game = ->
 
   finished = (player_name) ->
     state = states['finished']
-    alert(player_name + ' win!!')
-      
+    #TODO must be fixed
+#    alert(player_name + ' win!!')
+    alert(if player_name=='player1' then 'Comp' else 'You' + ' win!!')
+
+
+  shutdown = ->
+    $('body').off 'click', '.ask_question'
+
+    $('body').off 'click', '.answer_yes'
+    $('body').off 'click', '.answer_no'
+    $('body').off 'click', p1_card_selector
+    $('body').off 'click', p2_card_selector
+
+
   return {
     initiate: initiate
     get_state: -> return state;
+    shutdown: shutdown
   }    
+
