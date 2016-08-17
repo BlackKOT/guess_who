@@ -125,8 +125,9 @@ window.game = ->
     measures = {}
     for k,v of p2_cards_obj
       for n,val of v.attrs
-        key = "#{n}|#{val}"
-        measures[key] = (Number(measures[key])||0) + 1
+        if (n != 'name')
+          key = "#{n}|#{val}"
+          measures[key] = (Number(measures[key])||0) + 1
     for key, val of measures
       unless ignored_questions[key]
         sort_measures.push {name: key, val: val}
