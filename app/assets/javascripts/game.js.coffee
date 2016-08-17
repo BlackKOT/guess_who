@@ -63,7 +63,9 @@ window.game = ->
             }
         )
 
-        p1_face = p1_cards_obj[Object.keys(p1_cards_obj)[Math.floor(Math.random() * 24)]]
+        index = Object.keys(p1_cards_obj)[Math.floor(Math.random() * 24)]
+        p1_face = p1_cards_obj[index]
+        p1_face.index = index
 #        p1_face.obj.addClass('sos')
       else
         # send request to channel
@@ -100,6 +102,7 @@ window.game = ->
         if ($card_obj.attr('card_id'))
           $card_obj.removeClass("face-#{$card_obj.attr('card_id')} sos back")
         $card_obj.addClass("face-#{card_id}").attr('card_id', card_id)
+        $card_obj.find('.name').text(game_faces().faces[card_id].name)
     )
 
   choose_turn = ->
@@ -191,7 +194,9 @@ window.game = ->
     """
 
   choose_target = ->
-    p2_face = p2_cards_obj[$(@).attr('card_id')]
+    index = $(@).attr('card_id')
+    p2_face = p2_cards_obj[index]
+    p2_face.index = index
     p2_face.obj.addClass('sos')
 
     $('body').off 'click', p2_card_selector
@@ -295,7 +300,7 @@ window.game = ->
       if (negative) then  predictable = !predictable
 
       if (predictable)
-        if person_key == key
+        if person_key.index == key
           finished(if is_first_player then 'player1' else 'player2')
 
         value.obj.addClass('back')
