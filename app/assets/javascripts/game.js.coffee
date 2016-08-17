@@ -102,6 +102,7 @@ window.game = ->
         if ($card_obj.attr('card_id'))
           $card_obj.removeClass("face-#{$card_obj.attr('card_id')} sos back")
         $card_obj.addClass("face-#{card_id}").attr('card_id', card_id)
+        $card_obj.find('.name').text(game_faces().faces[card_id].name)
     )
 
   choose_turn = ->
