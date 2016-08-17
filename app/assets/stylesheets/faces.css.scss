@@ -1,16 +1,17 @@
 $img_count: 81;
-$offset: 150;
+$xoffset: 150;
+$yoffset: 160;
 
 @for $face_num from 0 to $img_count {
   .face-#{$face_num} {
-    background: asset-data-url('faces.gif') #{($face_num % 9) * -$offset}px #{floor($face_num / 9) * -$offset + 6}px no-repeat;
+    background: asset-data-url('faces.gif') #{($face_num % 9) * -$xoffset}px #{floor($face_num / 9) * -$yoffset + 15}px no-repeat;
     //background-size: contain;
   }
 }
 
 div[class^='face-'], div[class*='face-'] {
-    width: #{$offset}px;
-    height: #{$offset}px;
+    width: #{$xoffset}px;
+    height: #{$yoffset}px;
 }
 
 .card .name {
