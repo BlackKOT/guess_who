@@ -125,7 +125,7 @@ window.game = ->
     measures = {}
     for k,v of p2_cards_obj
       for n,val of v.attrs
-        if (n != 'name')
+        if (n != 'name' || !val)
           key = "#{n}|#{val}"
           measures[key] = (Number(measures[key])||0) + 1
     for key, val of measures
@@ -139,12 +139,13 @@ window.game = ->
 
   generate_question = ->
     values = comp_question().split('|').reverse()
-    "have #{values[0]} #{values[1]}"
+    "have #{values[0]} #{values[1]}".replace('_', ' ')
 
   proc_question_panel = ->
     data = if state == states['player1'] # comp turn
       if (Object.keys(p2_cards_obj).length <= 3)
-        card_index = Math.floor(Math.random() * p2_cards_obj.length)
+        card_index = Math.floor(Math.random() * (p2_cards_obj.length - 1))
+        console.log card_index
         card = p2_cards_obj[card_index].obj
         choose_face_p1.call(card)
 
@@ -186,10 +187,10 @@ window.game = ->
     """
       <option value="sex|male">male gender</option>
       <option value="sex|female">female gender</option>
-      <option value="glasses|has glasses">glasses</option>
+      <option value="glasses| ">glasses</option>
       <option value="teeth|visible teeth">visible teeth</option>
       <option value="beard_or_mustaches|visible beard or mustaches">visible beard or mustaches</option>
-      <option value="hair|haired">hair</option>
+      <option value="hair| ">hair</option>
       #{hair_options()}
     """
 
@@ -274,10 +275,10 @@ window.game = ->
       questions_list[rel_val + property_val] = true
 
       # yes - no section for comp
-#      [hkey, hvalue] = prepare_question_attrs(property_val)
+      [hkey, hvalue] = prepare_question_attrs(property_val)
 
-#      unless (res = p1_face.attrs[hkey] == hvalue)
-#        rel_val = if rel_val == '+' then '-' else '+'
+      unless (res = p1_face.attrs[hkey] == hvalue)
+        rel_val = if rel_val == '+' then '-' else '+'
       #########################################
 
       proceed_question(rel_val + property_val)
@@ -291,13 +292,13 @@ window.game = ->
     obj_list = if is_first_player then p2_cards_obj else p1_cards_obj
     person_key = if is_first_player then p2_face else p1_face
 
-#    negative = question[0] == '-'
+    negative = question[0] == '-'
 
     [hkey, hvalue] = prepare_question_attrs(question.substring(1))
 
     for key, value of obj_list
       predictable = value.attrs[hkey] != hvalue
-#      if (negative) then  predictable = !predictable
+      if (negative) then  predictable = !predictable
 
       if (predictable)
         if person_key.index == key

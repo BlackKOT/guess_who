@@ -2,8 +2,8 @@ window.game_faces = ->
   face_values = {
     male: 'male'
     female: 'female'
-    glasses: 'has glasses'
-    hair: 'haired'
+    glasses: ' '
+    hair: ' '
     hair_color: {
       black: 'black',
       blonde: 'blonde',
