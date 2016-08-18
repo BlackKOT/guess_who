@@ -323,7 +323,7 @@ window.game_faces = ->
       hair_color: face_values['hair_color']['yellow'],
       teeth: null,
       beard_or_mustaches: null,
-      name: 'Ronald'
+      name: 'Amanda'
     },
     42: {
       sex: face_values['female'],

@@ -139,7 +139,7 @@ window.game = ->
 
   generate_question = ->
     values = comp_question().split('|').reverse()
-    if values[0]=='null' then "hasn't #{values[1]}" else "has a #{values[0]} #{values[1]}"
+    "have #{values[0]} #{values[1]}"
 
   proc_question_panel = ->
     data = if state == states['player1'] # comp turn
@@ -154,7 +154,7 @@ window.game = ->
           <p>Comp turn</p>
 
           <p>
-            A person #{generate_question()} ?
+            Does the person #{generate_question()} ?
           </p>
 
           <p>
@@ -167,8 +167,7 @@ window.game = ->
         <p>Your turn</p>
         <p>Please ask a question or choose face on opponent board (you have #{max_click_try - p2_click_try} attempts)</p>
         <p>
-          A person
-          <select class="relation"><option value="+">have</option><option value="-">dont have</option></select>
+          Does the person have
           a <select class='property'>#{properties()}</select> ?
           <a href="#" class="ask_question">Ask</a>
         </p>
@@ -264,7 +263,7 @@ window.game = ->
 
 
   ask_question = ->
-    rel_val = question_panel.find('.relation').val()
+    rel_val = '+'
     property_val = question_panel.find('.property').val()
 
     questions_list = state == states['player1'] ? p1_questions : p2_questions
@@ -275,10 +274,10 @@ window.game = ->
       questions_list[rel_val + property_val] = true
 
       # yes - no section for comp
-      [hkey, hvalue] = prepare_question_attrs(property_val)
+#      [hkey, hvalue] = prepare_question_attrs(property_val)
 
-      unless (res = p1_face.attrs[hkey] == hvalue)
-        rel_val = if rel_val == '+' then '-' else '+'
+#      unless (res = p1_face.attrs[hkey] == hvalue)
+#        rel_val = if rel_val == '+' then '-' else '+'
       #########################################
 
       proceed_question(rel_val + property_val)
@@ -292,13 +291,13 @@ window.game = ->
     obj_list = if is_first_player then p2_cards_obj else p1_cards_obj
     person_key = if is_first_player then p2_face else p1_face
 
-    negative = question[0] == '-'
+#    negative = question[0] == '-'
 
     [hkey, hvalue] = prepare_question_attrs(question.substring(1))
 
     for key, value of obj_list
       predictable = value.attrs[hkey] != hvalue
-      if (negative) then  predictable = !predictable
+#      if (negative) then  predictable = !predictable
 
       if (predictable)
         if person_key.index == key
