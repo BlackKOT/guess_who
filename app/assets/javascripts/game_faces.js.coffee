@@ -155,7 +155,7 @@ window.game_faces = ->
       sex: face_values['male'],
       glasses: face_values['glasses'],
       hair: face_values['hair'],
-      hair_color: face_values['hair_color']['brown'],
+      hair_color: face_values['hair_color']['yellow'],
       teeth: null,
       beard_or_mustaches: null,
       name: 'Daniel'
