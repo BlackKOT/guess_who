@@ -46,7 +46,9 @@ window.game = ->
       $('body').on 'click', '.answer_no', player2_negative_answer
 
       question_panel = jquestion_panel
-      question_panel.html('Please choose a face on human board...')
+      question_panel.html('Please choose a face...')
+      $(p1_card_selector).addClass('hoverable')
+      $(p2_card_selector).addClass('hoverable')
 
       if (p1_type == 'comp')
         comp_cards = {}
@@ -69,6 +71,10 @@ window.game = ->
 #        p1_face.obj.addClass('sos')
       else
         # send request to channel
+
+
+      $(p1_card_selector).hide()
+      $(p2_card_selector).show()
 
       $.each(
         $(p2_card_selector),
@@ -143,6 +149,8 @@ window.game = ->
 
   proc_question_panel = ->
     data = if state == states['player1'] # comp turn
+      $(p1_card_selector).hide()
+      $(p2_card_selector).show()
       if (Object.keys(p2_cards_obj).length <= 3)
         card_index = Math.floor(Math.random() * (p2_cards_obj.length - 1))
         console.log card_index
@@ -164,6 +172,8 @@ window.game = ->
           </p>
         """
     else
+      $(p1_card_selector).show()
+      $(p2_card_selector).hide()
       """
         <p>Your turn</p>
         <p>Please ask a question or choose face on opponent board (you have #{max_click_try - p2_click_try} attempts)</p>
@@ -201,6 +211,7 @@ window.game = ->
     p2_face.obj.addClass('sos')
 
     $('body').off 'click', p2_card_selector
+    $(p2_card_selector).removeClass('hoverable')
     choose_turn()
     false
 
