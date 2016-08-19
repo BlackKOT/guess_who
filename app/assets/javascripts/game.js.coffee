@@ -85,6 +85,33 @@ window.game = ->
     else
       alert('Fuck off')
 
+#  build_board = ->
+#    column_count = Math.floor(window.innerWidth / 150)
+#    row_count = Math.floor(24 / column_count)
+#
+#    for row in [1...row_count]
+#      for column in [1..column_count]
+#
+#
+##        primer
+#        var $list = $('<ul/>').addClass('wysiwyg-plugin-list list-group')
+#        .attr('unselectable','on');
+#        $.each( list_fontnames, function( name, font ) {
+#        var $link = $('<a/>').attr('href','#')
+#        .css( 'font-family', font )
+#        .html( name )
+#        .click(function(event) {
+#          $(element).wysiwyg('shell').fontName(font).closePopup();
+#        // prevent link-href-#
+#          event.stopPropagation();
+#        event.preventDefault();
+#        return false;
+#        });
+#        $list.append($('<li/>').addClass('list-group-item').append($link));
+#        });
+#        $popup.append( $list );
+##        end of primer
+
 
   generate_cards = (board_type) ->
     cards = {}

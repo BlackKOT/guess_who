@@ -1,10 +1,9 @@
 = content_for :cards_block do
-  - 24.times.to_a.each_slice(8) do |row|
-    .row
-      - row.each do |card_index|
-        = link_to('#') do
-          .card
-            span.name Lol
+  .row.clear
+    - 24.times.each do
+      = link_to('#') do
+        .card.pull-left
+          span.name Lol
 
 | Comp part
 .board
