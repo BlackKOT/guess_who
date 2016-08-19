@@ -47,7 +47,7 @@ window.game = ->
 
       question_panel = jquestion_panel
       question_panel.html('Please choose a face on human board...')
-      
+
       $(p1_card_selector).addClass('hoverable')
       $(p2_card_selector).addClass('hoverable')
 
@@ -88,34 +88,6 @@ window.game = ->
     else
       alert('Fuck off')
 
-#  build_board = ->
-#    column_count = Math.floor(window.innerWidth / 150)
-#    row_count = Math.floor(24 / column_count)
-#
-#    for row in [1...row_count]
-#      for column in [1..column_count]
-#
-#
-##        primer
-#        var $list = $('<ul/>').addClass('wysiwyg-plugin-list list-group')
-#        .attr('unselectable','on');
-#        $.each( list_fontnames, function( name, font ) {
-#        var $link = $('<a/>').attr('href','#')
-#        .css( 'font-family', font )
-#        .html( name )
-#        .click(function(event) {
-#          $(element).wysiwyg('shell').fontName(font).closePopup();
-#        // prevent link-href-#
-#          event.stopPropagation();
-#        event.preventDefault();
-#        return false;
-#        });
-#        $list.append($('<li/>').addClass('list-group-item').append($link));
-#        });
-#        $popup.append( $list );
-##        end of primer
-
-
   generate_cards = (board_type) ->
     cards = {}
     while(Object.keys(cards).length < 24)
@@ -153,13 +125,14 @@ window.game = ->
   comp_question = ->
     sort_measures = []
     measures = {}
+    faces_count = Object.keys(p2_cards_obj).length
     for k,v of p2_cards_obj
       for n,val of v.attrs
         if (n != 'name' || !val)
           key = "#{n}|#{val}"
           measures[key] = (Number(measures[key])||0) + 1
     for key, val of measures
-      unless ignored_questions[key]
+      unless ignored_questions[key] && val < faces_count
         sort_measures.push {name: key, val: val}
     sort_measures.sort (obj1, obj2) ->
       obj1.val - obj2.val
@@ -174,9 +147,9 @@ window.game = ->
   proc_question_panel = ->
     data = if state == states['player1'] # comp turn
       if (Object.keys(p2_cards_obj).length <= 3)
-        card_index = Math.floor(Math.random() * (p2_cards_obj.length - 1))
-        console.log card_index
-        card = p2_cards_obj[card_index].obj
+        card_keys = Object.keys(p2_cards_obj)
+        card_index = card_keys[Math.floor(Math.random() * (card_keys.length - 1))]
+        card = p2_cards_obj[''+card_index].obj
         choose_face_p1.call(card)
 
         'Comp clicked on card...'
@@ -245,7 +218,7 @@ window.game = ->
     if (face_index == p2_face.obj.attr('card_id'))
       finished('player1')
     else
-      $(@).addClass('back')
+      $(@).addClass('back comp_select')
       delete p2_cards_obj[face_index]
 
       if p1_click_try == max_click_try
