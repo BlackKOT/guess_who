@@ -340,6 +340,7 @@ window.game = ->
     state = states['finished']
     #TODO must be fixed
 #    alert(player_name + ' win!!')
+    p1_face.obj.addClass('comp_selected')
     alert(if player_name=='player1' then 'Comp' else 'You' + ' win!!')
 
 
