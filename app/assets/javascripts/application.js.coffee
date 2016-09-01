@@ -3,7 +3,7 @@
 #= require react
 #= require react_ujs
 #= require components
-#= require react-modal
+
 #= require_tree .
 
 window.initiate_game = ->
