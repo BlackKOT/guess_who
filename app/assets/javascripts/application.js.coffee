@@ -4,7 +4,9 @@
 #= require react_ujs
 #= require components
 
-#= require_tree .
+#= require game
+
+# require_tree .
 
 window.initiate_game = ->
   if window.current_game

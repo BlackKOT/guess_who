@@ -1,7 +1,6 @@
 class App extends React.Component {
     constructor(props) {
-        console.log(props);
-        super(props)
+        super(props);
         this.state = { isModalOpen: false }
     }
 
@@ -30,7 +29,7 @@ class App extends React.Component {
 class Modal extends React.Component {
     render() {
         if (this.props.isOpen === false)
-            return null
+            return null;
 
         let modalStyle = {
             position: 'absolute',
@@ -39,11 +38,11 @@ class Modal extends React.Component {
             transform: 'translate(-50%, -50%)',
             zIndex: '9999',
             background: '#fff'
-        }
+        };
 
         if (this.props.width && this.props.height) {
-            modalStyle.width = this.props.width + 'px'
-            modalStyle.height = this.props.height + 'px'
+            modalStyle.width = this.props.width + 'px';
+            modalStyle.height = this.props.height + 'px';
             modalStyle.marginLeft = '-' + (this.props.width/2) + 'px',
                 modalStyle.marginTop = '-' + (this.props.height/2) + 'px',
                 modalStyle.transform = null
@@ -63,7 +62,7 @@ class Modal extends React.Component {
             left: '0px',
             zIndex: '9998',
             background: 'rgba(0, 0, 0, 0.3)'
-        }
+        };
 
         if (this.props.backdropStyle) {
             for (let key in this.props.backdropStyle) {
@@ -84,7 +83,7 @@ class Modal extends React.Component {
     }
 
     close(e) {
-        e.preventDefault()
+        e.preventDefault();
 
         if (this.props.onClose) {
             this.props.onClose()
@@ -92,4 +91,4 @@ class Modal extends React.Component {
     }
 }
 
-ReactDOM.render(<App/>, document.getElementById('app'))
+//ReactDOM.render(<App/>, document.getElementById('app'));
