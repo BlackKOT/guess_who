@@ -1,17 +1,21 @@
-class App extends React.Component {
+class ModalComponent extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { isModalOpen: false }
+        this.state = { isModalOpen: !!props.opened };
+        this.content = props.content;
+        this.action = props.action;
     }
 
     render() {
+        // <button onClick={() => this.openModal()}>Open modal</button>
         return (
             <div>
-                <button onClick={() => this.openModal()}>Open modal</button>
                 <Modal isOpen={this.state.isModalOpen} onClose={() => this.closeModal()}>
-                    <h1>Modal title</h1>
-                    <p>hello</p>
-                    <p><button onClick={() => this.closeModal()}>Close</button></p>
+                    <h1>{this.content.title}</h1>
+                    <hr></hr>
+                    <p>{this.content.text}</p>
+                    <hr></hr>
+                    <button onClick={() => this.closeModal() || this.action.func()}>{this.action.title}</button>
                 </Modal>
             </div>
         )
@@ -37,7 +41,8 @@ class Modal extends React.Component {
             left: '50%',
             transform: 'translate(-50%, -50%)',
             zIndex: '9999',
-            background: '#fff'
+            background: '#fff',
+            padding: '10px'
         };
 
         if (this.props.width && this.props.height) {

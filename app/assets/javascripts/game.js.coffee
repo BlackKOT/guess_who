@@ -132,10 +132,12 @@ window.game = ->
           key = "#{n}|#{val}"
           measures[key] = (Number(measures[key])||0) + 1
     for key, val of measures
-      unless ignored_questions[key] && val < faces_count
+      if !ignored_questions[key] && val < faces_count
         sort_measures.push {name: key, val: val}
     sort_measures.sort (obj1, obj2) ->
       obj1.val - obj2.val
+
+#FIXME    sort_measures[Math.round(...)] is undefined
     p1_question = sort_measures[Math.round(sort_measures.length / 2)].name
     ignored_questions[p1_question] = true
     p1_question
@@ -338,10 +340,18 @@ window.game = ->
 
   finished = (player_name) ->
     state = states['finished']
-    #TODO must be fixed
-#    alert(player_name + ' win!!')
     p1_face.obj.addClass('comp_selected')
-    alert(if player_name=='player1' then 'Comp' else 'You' + ' win!!')
+    ReactDOM.render(
+      React.createElement(
+        ModalComponent,
+        {
+          opened: true,
+          content: {title: 'Game Over', text: (if player_name=='player1' then 'Comp' else 'You' + ' win!!')},
+          action: {func: window.initiate_game, title: 'Start new game'}
+        }
+      ),
+      document.getElementById('app')
+    );
 
 
   shutdown = ->
