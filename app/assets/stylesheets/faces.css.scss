@@ -13,7 +13,7 @@ div[class^='face-'], div[class*='face-'] {
     width: #{$xoffset}px;
     height: #{$yoffset}px;
 }
-
-.card .name {
-  background-color: #fff;
+.card-window {
+  display: inline-block;
 }
+
