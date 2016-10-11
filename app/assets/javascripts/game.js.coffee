@@ -146,7 +146,7 @@ window.game = ->
   generate_question = ->
     if (comp_quest = comp_question())
       values = comp_quest.split('|').reverse()
-      "have #{values[0]} #{values[1]}".replace('_', ' ')
+      "have #{values[0]} #{values[1]}".replace(/_/g, ' ')
 
   proc_question_panel = ->
     data = undefined
@@ -201,7 +201,7 @@ window.game = ->
       <option value="sex|male">male gender</option>
       <option value="sex|female">female gender</option>
       <option value="glasses| ">glasses</option>
-      <option value="teeth|visible teeth">visible teeth</option>
+      <option value="teeth|visible">visible teeth</option>
       <option value="beard_or_mustaches|visible beard or mustaches">visible beard or mustaches</option>
       <option value="hair| ">hair</option>
       #{hair_options()}

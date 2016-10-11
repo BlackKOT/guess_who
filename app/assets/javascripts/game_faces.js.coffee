@@ -14,7 +14,7 @@ window.game_faces = ->
       green: 'green',
       orange: 'orange'
     }
-    teeth: 'visible teeth'
+    teeth: 'visible'
     beard_or_mustaches: 'visible beard or mustaches'
   }
 
