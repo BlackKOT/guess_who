@@ -137,21 +137,22 @@ window.game = ->
     sort_measures.sort (obj1, obj2) ->
       obj1.val - obj2.val
 
-#FIXME    sort_measures[Math.round(...)] is undefined
     pos = Math.round(sort_measures.length / 2)
-    console.log(pos, sort_measures)
-
-    p1_question = sort_measures[pos].name
-    ignored_questions[p1_question] = true
+    p1_question = (sort_measures[pos] || {}).name
+    if (p1_question) then ignored_questions[p1_question] = true
     p1_question
 
   generate_question = ->
-    values = comp_question().split('|').reverse()
-    "have #{values[0]} #{values[1]}".replace('_', ' ')
+    if (comp_quest = comp_question())
+      values = comp_quest.split('|').reverse()
+      "have #{values[0]} #{values[1]}".replace('_', ' ')
 
   proc_question_panel = ->
     data = if state == states['player1'] # comp turn
-      if (Object.keys(p2_cards_obj).length <= 3)
+      click_needed = Object.keys(p2_cards_obj).length <= 3
+      cquestion = unless click_needed then generate_question()
+
+      if (click_needed || !cquestion)
         card_keys = Object.keys(p2_cards_obj)
         card_index = card_keys[Math.floor(Math.random() * (card_keys.length - 1))]
         card = p2_cards_obj[''+card_index].obj
@@ -163,7 +164,7 @@ window.game = ->
           <p>Comp turn</p>
 
           <p>
-            Does the person #{generate_question()} ?
+            Does the person #{cquestion} ?
           </p>
 
           <p>
