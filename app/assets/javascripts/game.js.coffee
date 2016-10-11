@@ -49,7 +49,8 @@ window.game = ->
       question_panel.html('Please choose a face on human board...')
 
       $(p1_card_selector).removeClass('hoverable comp_selected')
-      $(p2_card_selector).addClass('hoverable')
+      $(p2_card_selector).addClass('hoverable').removeClass('comp_select')
+
 
       if (p1_type == 'comp')
         comp_cards = {}
