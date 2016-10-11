@@ -48,7 +48,7 @@ window.game = ->
       question_panel = jquestion_panel
       question_panel.html('Please choose a face on human board...')
 
-      $(p1_card_selector).addClass('hoverable')
+      $(p1_card_selector).removeClass('hoverable')
       $(p2_card_selector).addClass('hoverable')
 
       if (p1_type == 'comp')
@@ -138,7 +138,10 @@ window.game = ->
       obj1.val - obj2.val
 
 #FIXME    sort_measures[Math.round(...)] is undefined
-    p1_question = sort_measures[Math.round(sort_measures.length / 2)].name
+    pos = Math.round(sort_measures.length / 2)
+    console.log(pos, sort_measures)
+
+    p1_question = sort_measures[pos].name
     ignored_questions[p1_question] = true
     p1_question
 
@@ -206,6 +209,7 @@ window.game = ->
     p2_face.obj.addClass('sos')
 
     $('body').off 'click', p2_card_selector
+    $(p1_card_selector).addClass('hoverable')
     $(p2_card_selector).removeClass('hoverable')
     choose_turn()
     false
@@ -346,7 +350,7 @@ window.game = ->
         ModalComponent,
         {
           opened: true,
-          content: {title: 'Game Over', text: (if player_name=='player1' then 'Comp' else 'You' + ' win!!')},
+          content: {title: 'Game Over', text: (if player_name=='player1' then 'Comp' else 'You') + ' win!!'},
           action: {func: window.initiate_game, title: 'Start new game'}
         }
       ),
