@@ -48,7 +48,7 @@ window.game = ->
       question_panel = jquestion_panel
       question_panel.html('Please choose a face on human board...')
 
-      $(p1_card_selector).removeClass('hoverable')
+      $(p1_card_selector).removeClass('hoverable comp_selected')
       $(p2_card_selector).addClass('hoverable')
 
       if (p1_type == 'comp')
