@@ -360,7 +360,6 @@ window.game = ->
       React.createElement(
         ModalComponent,
         {
-          opened: true,
           content: {title: 'Game Over', text: text},
           action: {func: window.initiate_game, title: 'Start new game'}
         }
