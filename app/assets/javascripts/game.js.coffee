@@ -149,7 +149,9 @@ window.game = ->
       "have #{values[0]} #{values[1]}".replace('_', ' ')
 
   proc_question_panel = ->
-    data = if state == states['player1'] # comp turn
+    data = undefined
+
+    if state == states['player1'] # comp turn
       click_needed = Object.keys(p2_cards_obj).length <= 3
       cquestion = unless click_needed then generate_question()
 
@@ -157,11 +159,11 @@ window.game = ->
         card_keys = Object.keys(p2_cards_obj)
         card_index = card_keys[Math.floor(Math.random() * (card_keys.length - 1))]
         card = p2_cards_obj[''+card_index].obj
-        choose_face_p1.call(card)
 
-        'Comp clicked on card...'
+        question_panel.html('Comp clicked on card...')
+        return choose_face_p1.call(card)
       else
-        """
+        data = """
           <p>Comp turn</p>
 
           <p>
@@ -174,7 +176,7 @@ window.game = ->
           </p>
         """
     else
-      """
+      data = """
         <p>Your turn</p>
         <p>Please ask a question or choose face on opponent board (you have #{max_click_try - p2_click_try} attempts)</p>
         <p>
@@ -336,7 +338,7 @@ window.game = ->
       state = states['player1']
       cards = p2_cards_obj
     else
-      alert('Some shit happened')
+      alert(state, 'Some shit happened')
 
     if (Object.keys(cards).length == 1)
       finished(if state == states['player1'] then 'player1' else 'player2')
@@ -345,6 +347,7 @@ window.game = ->
 
 
   finished = (player_name) ->
+    question_panel.html('Game Over !!!')
     state = states['finished']
     p1_face.obj.addClass('comp_selected')
     ReactDOM.render(
@@ -352,7 +355,7 @@ window.game = ->
         ModalComponent,
         {
           opened: true,
-          content: {title: 'Game Over', text: (if player_name=='player1' then 'Comp' else 'You') + ' win!!'},
+          content: {title: 'Game Over', text: (if player_name == 'player1' then 'Comp' else 'You') + ' win!!'},
           action: {func: window.initiate_game, title: 'Start new game'}
         }
       ),
