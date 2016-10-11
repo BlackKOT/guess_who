@@ -159,6 +159,7 @@ window.game = ->
         card_keys = Object.keys(p2_cards_obj)
         card_index = card_keys[Math.floor(Math.random() * (card_keys.length - 1))]
         card = p2_cards_obj[''+card_index].obj
+        console.log('sdfsd', card, state)
 
         question_panel.html('Comp clicked on card...')
         return choose_face_p1.call(card)
@@ -328,6 +329,9 @@ window.game = ->
 
 
   change_turn = ->
+    if (state == states['finished'])
+      return false;
+
     cards = []
 
     if (state == states['player1'])
@@ -347,7 +351,9 @@ window.game = ->
 
 
   finished = (player_name) ->
-    question_panel.html('Game Over !!!')
+    text = (if player_name == 'player1' then 'Comp' else 'You') + ' win!!'
+
+    question_panel.html('Game Over!!! ' + text)
     state = states['finished']
     p1_face.obj.addClass('comp_selected')
     ReactDOM.render(
@@ -355,12 +361,13 @@ window.game = ->
         ModalComponent,
         {
           opened: true,
-          content: {title: 'Game Over', text: (if player_name == 'player1' then 'Comp' else 'You') + ' win!!'},
+          content: {title: 'Game Over', text: text},
           action: {func: window.initiate_game, title: 'Start new game'}
         }
       ),
       document.getElementById('app')
     );
+    false
 
 
   shutdown = ->
