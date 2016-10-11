@@ -159,7 +159,7 @@ window.game = ->
         card_keys = Object.keys(p2_cards_obj)
         card_index = card_keys[Math.floor(Math.random() * (card_keys.length - 1))]
         card = p2_cards_obj[''+card_index].obj
-        console.log('sdfsd', card, state)
+        console.log('Comp choose ', card, state)
 
         question_panel.html('Comp clicked on card...')
         return choose_face_p1.call(card)
@@ -342,7 +342,7 @@ window.game = ->
       state = states['player1']
       cards = p2_cards_obj
     else
-      alert(state, 'Some shit happened')
+      alert(state + ' Some shit happened')
 
     if (Object.keys(cards).length == 1)
       finished(if state == states['player1'] then 'player1' else 'player2')
@@ -366,8 +366,7 @@ window.game = ->
         }
       ),
       document.getElementById('app')
-    );
-    false
+    ).openModal();
 
 
   shutdown = ->

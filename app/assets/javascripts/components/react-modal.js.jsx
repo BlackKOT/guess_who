@@ -1,5 +1,6 @@
 class ModalComponent extends React.Component {
     constructor(props) {
+        console.log('Huy');
         super(props);
         this.state = { isModalOpen: !!props.opened };
         this.content = props.content;
@@ -36,7 +37,7 @@ class Modal extends React.Component {
             return null;
 
         let modalStyle = {
-            position: 'fixed',
+            position: 'absolute',
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
@@ -60,7 +61,7 @@ class Modal extends React.Component {
         }
 
         let backdropStyle = {
-            position: 'fixed',
+            position: 'absolute',
             width: '100%',
             height: '100%',
             top: '0px',
